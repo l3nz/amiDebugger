@@ -1,0 +1,161 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'findbugs'
+
+
+def env = System.getenv()
+
+//
+// I defaults valgono per HUDSON
+//
+
+project.ext {
+  webapp_name    = 'amiDebugger'
+  app_version    = '0.1'
+
+  jars_repo      = '/opt/hudson/JAR_COMUNI'
+  build_number   = env["BUILD_NUMBER"]  
+  version_class  = 'ch/loway/oss/adb/VERSION.java'
+  build_time     = "" + new Date()
+}
+
+// carica dettagli per il PC se esiste.
+def pcname = env["USERDOMAIN"]
+if ( pcname != null  ) {
+//	apply from: 'settings-' + pcname + '.gradle'
+}
+
+println " --- PROPERTIES ------ "
+project.ext.properties.each {key, value -> println key + ": '" + value + "'" }
+println " --------------------- "
+
+// ------------------------------S
+
+sourceCompatibility: 1.5
+version: 1.0
+
+sourceSets {
+		
+	main {
+		java {
+			srcDirs "$buildDir/classes_subst"
+		}
+	}
+
+	test {
+		java {
+			srcDirs "tests"
+		}
+	}
+}
+
+jar {
+    manifest {
+        attributes("Implementation-Title": project.ext.webapp_name, "Implementation-Version": project.ext.app_version)
+    }
+    archiveName project.ext.webapp_name + "-" + project.ext.app_version + ".jar"
+}
+
+
+repositories {
+	mavenCentral()
+	maven { url 'http://repo.typesafe.com/typesafe/releases/' }
+	flatDir name: 'hudson', dirs: project.ext.jars_repo
+
+}
+
+configurations {
+    jasper
+}
+
+dependencies {
+	compile 'org.slf4j:slf4j-jdk14:1.6.4'	
+	compile 'com.typesafe.akka:akka-actor:2.0'
+    compile 'mysql:mysql-connector-java:5.1.19'
+
+	testCompile 'junit:junit:4.10'
+
+    jasper 'org.apache.tomcat:jasper:6.0.33',
+           'javax.servlet:jstl:1.1.2',
+           'taglibs:standard:1.1.2'            
+}
+
+war {
+	FileTree tree = fileTree( dir: "../.." )	
+	tree.exclude "**/WEB-INF/gradle/**"	
+	tree.exclude "**/WEB-INF/classes/**"	
+	tree.exclude "**/WEB-INF/tests/**"	
+	tree.exclude "**/WEB-INF/builder/**"		
+	tree.exclude "**/WEB-INF/web.xml"	
+
+	////tree.each { File file -> 	println file }
+
+	from tree
+	baseName = project.ext.webapp_name
+	webXml = file( "web_default.xml" )
+}
+
+task copyDeps(type: Copy) {
+  from configurations.runtime
+  into './libs'
+}
+
+task compile_jsp( dependsOn:  jar ) {
+	doLast {
+	
+		def cjd = new File( "$buildDir/compileJsps" )
+		cjd.mkdirs();
+	
+	    ant.taskdef(classname: 'org.apache.jasper.JspC', name: 'jasper', classpath: configurations.jasper.asPath)
+	    ant.jasper(validateXml: false, uriRoot: "../..", outputDir: cjd )
+
+		def classpath_pages = files( file("$buildDir/libs/" + project.ext.webapp_name + "-" + project.ext.app_version + ".jar" ), 
+			                         configurations.runtime,
+			                         configurations.jasper )
+	
+	    ant.javac(srcdir: cjd, 
+	    			destdir: cjd, 
+	    			includes: '**/*.java',
+	    			classpath: classpath_pages.asPath,
+	    			includeantruntime: false	    			
+	    			) 
+	}
+}
+test.dependsOn compile_jsp
+
+compileJava.dependsOn copyDeps
+
+task setVersionInSources() {
+	doLast {
+		def cjd = new File( "$buildDir/classes_subst" )
+		cjd.mkdirs();
+
+		def FileTree tree = fileTree( dir: "./classes" )	
+		//tree.each { File file -> 	println file }
+		
+		copy {
+        from './classes'
+        into "$buildDir/classes_subst"                
+    }
+
+    ant.replace( file: "$buildDir/classes_subst/" + project.ext.version_class, 
+    	           token: "NUMBER",
+    	           value: "NUMBER = \"" + project.ext.app_version + "\"; //"    	           
+    	           )
+    
+    ant.replace( file: "$buildDir/classes_subst/" + project.ext.version_class, 
+    	           token: "BUILD_N",
+    	           value: "BUILD_N = \"" + project.ext.build_number + " - "  + project.ext.build_time  + "\"; //"
+    	           )  	  	
+	}
+}
+compileJava.dependsOn setVersionInSources
+
+
+//
+// findbugs
+//
+tasks.withType(FindBugs){
+    ignoreFailures = true
+}
+
