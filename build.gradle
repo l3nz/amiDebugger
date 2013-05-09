@@ -71,7 +71,8 @@ configurations {
 dependencies {
 	compile 'org.slf4j:slf4j-jdk14:1.6.4'	
 	compile 'com.typesafe.akka:akka-actor:2.0'
-    compile 'mysql:mysql-connector-java:5.1.19'
+	compile 'com.typesafe.akka:akka-slf4j:2.0'
+    //compile 'mysql:mysql-connector-java:5.1.19'
 
 	testCompile 'junit:junit:4.10'
 
