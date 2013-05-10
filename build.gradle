@@ -73,6 +73,11 @@ dependencies {
 	compile 'com.typesafe.akka:akka-actor:2.0'
 	compile 'com.typesafe.akka:akka-slf4j:2.0'
     //compile 'mysql:mysql-connector-java:5.1.19'
+    compile 'org.apache.tomcat:jasper:6.0.33',
+           'javax.servlet:jstl:1.1.2',
+           'taglibs:standard:1.1.2'            
+
+
 
 	testCompile 'junit:junit:4.10'
 
@@ -82,18 +87,16 @@ dependencies {
 }
 
 war {
-	FileTree tree = fileTree( dir: "../.." )	
-	tree.exclude "**/WEB-INF/gradle/**"	
-	tree.exclude "**/WEB-INF/classes/**"	
-	tree.exclude "**/WEB-INF/tests/**"	
-	tree.exclude "**/WEB-INF/builder/**"		
-	tree.exclude "**/WEB-INF/web.xml"	
+//	FileTree tree = fileTree( dir: "." )	
+//	tree.exclude "**/classes/**"	
+//	tree.exclude "**/tests/**"		
+	//tree.exclude "**/WEB-INF/web.xml"	
 
 	////tree.each { File file -> 	println file }
 
-	from tree
-	baseName = project.ext.webapp_name
-	webXml = file( "web_default.xml" )
+//	from tree
+//	baseName = project.ext.webapp_name
+	//webXml = file( "web_default.xml" )
 }
 
 task copyDeps(type: Copy) {
