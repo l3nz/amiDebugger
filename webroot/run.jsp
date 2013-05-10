@@ -44,6 +44,14 @@
                     <hr>
 
                     <a href="index.jsp">Use other server</a>
+
+                    <hr>
+                    
+                    Links: <br>
+
+                    <a href="http://www.voip-info.org/wiki/view/Asterisk+manager+API" target="ami">AMI on Voip-Info</a> <br>
+                    <a href="http://queuemetrics.com" target="qm">QueueMetrics</a> <br>
+                    <a href="http://wombatdialer.com" target="wbt">WombatDialer</a> <br>
                     
                 </td>
             </tr>
