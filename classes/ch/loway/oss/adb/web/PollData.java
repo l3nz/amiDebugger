@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class PollData {
 
-    public String poll(final int from ) throws Exception {
+    public String poll(final int from, final String filter ) throws Exception {
 
         ActorSystem system = AS.getInstance().system;
         ActorRef listActor = system.actorFor( ACT.getPath(HistoryHandler.class));
@@ -39,7 +39,9 @@ public class PollData {
         Collections.reverse(lData);
 
         for ( AmiBlock b: lData) {
-            sb.append( b.toHtml() ).append("\n");
+            if ( b.containsString(filter) ) {
+                sb.append( b.toHtml() ).append("\n");
+            }
         }
 
         return sb.toString();

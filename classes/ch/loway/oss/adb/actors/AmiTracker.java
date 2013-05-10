@@ -109,6 +109,7 @@ public class AmiTracker extends UntypedActor {
             return true;
         } else {
             logger.error("Error logging on - '" + response + "'");
+            addBlockToListHandler( AmiBlock.AmiMessage("Error logging on to " + stServer));
             return false;
         }
     }

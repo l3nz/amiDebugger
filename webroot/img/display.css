@@ -53,6 +53,15 @@ root {
 }
 
 .cmd {
-    width: 90%;
+    width: 800px;
     height: 150px;
 }
+
+
+#results {
+    border: 0px black;
+    height: 700px;
+    width: 800px;
+    overflow:auto;    
+}
+

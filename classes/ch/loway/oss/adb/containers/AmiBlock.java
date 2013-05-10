@@ -106,9 +106,50 @@ public class AmiBlock {
     }
 
 
+
+    public boolean isEmpty() {
+        return ( lData.size() == 0);
+    }
+
     /**
-     * Prepares a login commnad.
+     * Effettua una copia "profonda" per portarla su un altro thread.
      * 
+     * @return
+     */
+
+    public AmiBlock dup() {
+        AmiBlock out = new AmiBlock();
+        out.lData.addAll(lData);
+        out.timestamp = timestamp;
+        out.comments = comments;
+        out.userCommand = userCommand;
+        return out;
+    }
+
+    public boolean containsString(String filter) {
+
+        if ( filter == null ) {
+            return true;
+        }
+
+        if (filter.length() == 0) {
+            return true;
+        }
+
+        String lcFilter = filter.toLowerCase();
+
+        for ( String s: lData ) {
+            if ( s.toLowerCase().contains( lcFilter )) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+        /**
+     * Prepares a login commnad.
+     *
      * @param user
      * @param pass
      * @param events
@@ -131,23 +172,12 @@ public class AmiBlock {
         return a;
     }
 
-    public boolean isEmpty() {
-        return ( lData.size() == 0);
-    }
-
-    /**
-     * Effettua una copia "profonda" per portarla su un altro thread.
-     * 
-     * @return
-     */
-
-    public AmiBlock dup() {
-        AmiBlock out = new AmiBlock();
-        out.lData.addAll(lData);
-        out.timestamp = timestamp;
-        out.comments = comments;
-        out.userCommand = userCommand;
-        return out;
+    public static AmiBlock AmiMessage( String s ) {
+        AmiBlock a = new AmiBlock();
+        a.addEntry("Message from AMI");
+        a.addEntry("Response: Error");
+        a.addEntry("Reason: " + s );
+        return a;
     }
 
 
