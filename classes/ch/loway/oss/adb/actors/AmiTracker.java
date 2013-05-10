@@ -1,8 +1,12 @@
 package ch.loway.oss.adb.actors;
 
+
+import akka.actor.ActorRef;
+import akka.actor.ReceiveTimeout;
 import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import akka.util.Duration;
 import ch.loway.oss.adb.containers.AmiBlock;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,16 +40,50 @@ public class AmiTracker extends UntypedActor {
 
     StartMsg currentServer = null;
 
+    public AmiTracker() {
+        //getContext().setReceiveTimeout(Duration.create(100, TimeUnit.MILLISECONDS));
+        getContext().setReceiveTimeout( Duration.create(200, java.util.concurrent.TimeUnit.MILLISECONDS));
+    }
+
+
 
     public void onReceive(Object message) throws Exception {
         if (message instanceof StartMsg) {
 
             currentServer = (StartMsg) message;
+            //disconnectFromAsterisk();
             connect();
+            
+        } else
+        if ( message instanceof SendCmd) {
+            AmiBlock blkIn = ((SendCmd) message).cmd;
+            sendSocketMessage(blkIn);
+            addBlockToListHandler( blkIn );
 
-            //logger.info("Hello " + ((StartMsg) message).who);
+        } else
+        if (message instanceof ReceiveTimeout) {
+                logger.info("On timeout");
+        } else {
+            //logger.error("Unknown message " + message.toString() + " - " + message.getClass().getCanonicalName() );
+        }
+
+        AmiBlock blk = readCompleteBlock();
+        addBlockToListHandler(blk);
+
+    }
+
+    private void addBlockToListHandler( AmiBlock blk ) {
+        if ( !blk.isEmpty() ) {
+            ActorRef history = getContext().actorFor( ACT.getPath(HistoryHandler.class));
+
+            if ( history != null ) {
+                history.tell( HistoryHandler.AddBlock.build(blk) );
+            }
+
+            logger.info( blk.toString() );
         }
     }
+
 
     private boolean connect() throws IOException {
 
@@ -251,4 +289,14 @@ public class AmiTracker extends UntypedActor {
             return m;
         }
     }
+
+    public static class SendCmd {
+        AmiBlock cmd = null;
+        public static SendCmd build( AmiBlock cmd ) {
+            SendCmd c = new SendCmd();
+            c.cmd = cmd;
+            return c;
+        }
+    }
+
 }

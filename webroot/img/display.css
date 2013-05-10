@@ -1,0 +1,43 @@
+/* 
+    Document   : display
+    Created on : 10-mag-2013, 12.26.53
+    Author     : lenz
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+.amiCommand, .amiEvent, .amiResponse, .amiOther {
+    font-family: monospace;
+    border-bottom: 10px;
+}
+
+.amiCommand {
+    background: yellow;    
+}
+
+.amiEvent {
+    background: white;    
+}
+
+.amiResponse {
+    background: #ccffff;
+    
+}
+
+.amiOther {
+    background: coral;
+}
+
+.cmd {
+    width: 90%;
+    height: 150px;
+}

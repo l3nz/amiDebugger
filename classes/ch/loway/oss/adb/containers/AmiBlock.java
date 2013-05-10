@@ -2,6 +2,7 @@
 package ch.loway.oss.adb.containers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,10 +14,22 @@ import java.util.List;
 public class AmiBlock {
 
     List<String> lData = new ArrayList<String>();
+    String comments = "";
+    long timestamp = 0L;
+    boolean userCommand = false;
 
     public void addEntry( String row ) {
-        lData.add(row);
+
+        if ( !row.isEmpty()) {
+            lData.add(row);
+        }
+        timestamp = System.currentTimeMillis();
     }
+
+    public void setUserCommand() {
+        userCommand = true;
+    }
+
 
     public String getToken( String token ) {
         String tokenPlus = token + ": ";
@@ -28,6 +41,25 @@ public class AmiBlock {
         }
 
         return "";
+    }
+
+    private String cssClass() {
+        if ( userCommand ) {
+            return "amiCommand";
+        }
+
+        if ( !getToken("Event").isEmpty() ) {
+            return "amiEvent";
+        }
+
+        if ( !getToken("Response").isEmpty() ) {
+            return "amiResponse";
+        }
+
+        return "amiOther";
+
+
+
     }
 
 
@@ -44,6 +76,28 @@ public class AmiBlock {
         sb.append( "\n" );
         return sb.toString();
     }
+
+    public String toHtml() {
+        
+        StringBuilder sb = new StringBuilder();        
+        Date d = new Date( timestamp );
+        String css = cssClass();
+
+        sb.append( "<div class='").append( css ).append("'>");
+        sb.append( "# ").append( d.toString() );
+        if ( comments.length() > 0 ) {
+            sb.append( " - ").append( comments );
+        }
+        sb.append( "<br>");
+
+        for ( String s: lData ) {
+            sb.append(s).append( "<br>" );
+        }
+
+        sb.append( "</div>");
+        return sb.toString();
+    }
+
 
     /**
      * Prepares a login commnad.
@@ -70,6 +124,24 @@ public class AmiBlock {
         return a;
     }
 
+    public boolean isEmpty() {
+        return ( lData.size() == 0);
+    }
+
+    /**
+     * Effettua una copia "profonda" per portarla su un altro thread.
+     * 
+     * @return
+     */
+
+    public AmiBlock dup() {
+        AmiBlock out = new AmiBlock();
+        out.lData.addAll(lData);
+        out.timestamp = timestamp;
+        out.comments = comments;
+        out.userCommand = userCommand;
+        return out;
+    }
 
 
 }
