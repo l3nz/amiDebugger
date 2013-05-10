@@ -48,12 +48,19 @@ public class AmiBlock {
             return "amiCommand";
         }
 
-        if ( !getToken("Event").isEmpty() ) {
+        String reponse = getToken("Response");
+        String event = getToken("Event");
+
+        if ( !event.isEmpty() ) {
             return "amiEvent";
         }
-
-        if ( !getToken("Response").isEmpty() ) {
-            return "amiResponse";
+        
+        if ( !reponse.isEmpty() ) {
+            if ( reponse.equalsIgnoreCase("error")) {
+                return "amiError";
+            } else {          
+                return "amiResponse";
+            }
         }
 
         return "amiOther";

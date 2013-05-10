@@ -15,26 +15,41 @@ root {
     display: block;
 }
 
-.amiCommand, .amiEvent, .amiResponse, .amiOther {
+.amiCommand, .amiEvent, .amiResponse, .amiError, .amiOther {
     font-family: monospace;
     border-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid;
+    padding: 3px;
+    margin-bottom: 10px;
 }
 
 .amiCommand {
-    background: yellow;    
+    background: white;
+    border-color: green;
 }
 
 .amiEvent {
-    background: white;    
+    background: lightcyan;
+    border-color: black;
+    
 }
 
 .amiResponse {
-    background: #ccffff;
-    
+    background: white;
+    border-color: green;
+    color: darkgreen;
+}
+
+.amiError {
+    background: red;
+    border-color: darkred;
+    color: white;
 }
 
 .amiOther {
     background: coral;
+    border-color: red;
 }
 
 .cmd {
