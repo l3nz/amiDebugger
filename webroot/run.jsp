@@ -31,12 +31,15 @@
                     <div id="postresults">---</div>
                     <hr>
 
-                    <input type="button" value="Reload" onclick="sendAction('Reload');"><br>
+                    
+                    <input type="button" value="Channel Summary" onclick="sendAction('CoreShowChannels');"><br>
                     <input type="button" value="Queue Summary" onclick="sendAction('QueueSummary');"><br>
-                    <input type="button" value="List Commands" onclick="sendAction('ListCommands');"><br>
+                    <input type="button" value="Sip Peers" onclick="sendAction('SipPeers');"><br>
+                    <input type="button" value="Reload Asterisk" onclick="sendAction('Reload');"><br>
                     <input type="button" value="Core Status" onclick="sendAction('CoreStatus');"><br>
                     <input type="button" value="Core Settings" onclick="sendAction('CoreSettings');"><br>
-
+                    <input type="button" value="List Commands" onclick="sendAction('ListCommands');"><br>
+                    
                     <hr>
                     Text filter: <br>
                     <input type="text" value="" id="filter">
