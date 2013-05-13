@@ -51,6 +51,9 @@ Download and install Tomcat.
 Download the webapp from http://www.loway.ch/dl/amiDebugger.war and copy it into the
 webapp directory.
 
+Tomcat might pick it up immediately or it may need a restart. In either case, 
+will nt take much :)
+
 
 Developers
 ----------
