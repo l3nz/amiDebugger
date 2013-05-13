@@ -11,9 +11,12 @@ The AMI is also extremely verbose and asynchronous - so you get a ton of logs
 out and you have to filter them to access the information you are looking for.
 
 Being tasked with writing new logic for the WombatDialer, I found myself at loss
-trying to fins a sort of interactive shell for the AMI. At the same time, I had 
+trying to find a sort of interactive shell for the AMI. At the same time, I had 
 been looking at Akka for a while and wanted to try it in the context of a web 
 application. So the amiDebugger was born.
+
+   - lenz
+
 
 Features
 --------
