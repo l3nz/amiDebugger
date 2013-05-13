@@ -53,7 +53,7 @@
                     <a href="index.jsp">Use other server</a>
 
                     <hr>
-                    <input class="btn" type="button" value="Originate" onclick="toCmd('Originate^Application: Wait^Data: 500^Async: 1');">
+                    <input class="btn" type="button" value="Originate" onclick="toCmd('Originate^Application: Wait^Data: 500^Async: 1^Channel: ....');">
                     <input class="btn" type="button" value="Bridge" onclick="toCmd('Bridge^Channel1: ...^Channel2: ...');">
                     <br>
                     <input class="btn" type="button" value="Asterisk" onclick="toCmd('Command^Command: core show channels');">                   
