@@ -19,6 +19,13 @@ function reload() {
         },
         success: function(resp) {
             $("#results").html( resp );
+
+            // add the "Channel: " text by the end of the #cmd textarea
+            $(".channelitem").click( function(e) {
+                var text = $(this).html();
+                $( "#cmd" ).val( $( "#cmd").val() + "\n" + text );
+            });
+
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             $("#results").html( XMLHttpRequest.responseText);

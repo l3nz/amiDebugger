@@ -98,7 +98,12 @@ public class AmiBlock {
         sb.append( "<br>");
 
         for ( String s: lData ) {
-            sb.append(s).append( "<br>" );
+
+            if ( s.toLowerCase().startsWith("channel:") ) {
+                sb.append( "<a href='#' class='channelitem'>").append(s).append("</a><br>");
+            } else {
+                sb.append(s).append( "<br>" );
+            }
         }
 
         sb.append( "</div>");

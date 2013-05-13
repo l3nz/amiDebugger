@@ -65,3 +65,26 @@ root {
     overflow:auto;    
 }
 
+
+/* Links di tipo Channel */
+
+.channelitem:link {
+    color: black;
+    text-decoration: none;
+
+}
+
+.channelitem:hover {
+    color: red;
+    text-decoration: underline;
+}
+
+.channelitem:visited {
+    color: black;
+    text-decoration: none;
+}
+
+.channelitem:active {
+    color: black;
+    text-decoration: none;
+}
