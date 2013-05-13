@@ -88,3 +88,9 @@ root {
     color: black;
     text-decoration: none;
 }
+
+/* Action buttons */
+
+.btn {
+    width: 90px;
+}

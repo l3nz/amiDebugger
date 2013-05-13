@@ -27,18 +27,22 @@
 
                     <h3>Lenz's amiDebugger</h3>
 
-                    Last post to server: <br>
-                    <div id="postresults">---</div>
-                    <hr>
 
                     
-                    <input type="button" value="Channel Summary" onclick="sendAction('CoreShowChannels');"><br>
-                    <input type="button" value="Queue Summary" onclick="sendAction('QueueSummary');"><br>
-                    <input type="button" value="Sip Peers" onclick="sendAction('SipPeers');"><br>
-                    <input type="button" value="Reload Asterisk" onclick="sendAction('Reload');"><br>
-                    <input type="button" value="Core Status" onclick="sendAction('CoreStatus');"><br>
-                    <input type="button" value="Core Settings" onclick="sendAction('CoreSettings');"><br>
-                    <input type="button" value="List Commands" onclick="sendAction('ListCommands');"><br>
+                    <input class="btn" type="button" value="Channels" onclick="sendAction('CoreShowChannels');">
+                    <input class="btn" type="button" value="Ch.Short" onclick="sendAction('command^Command: core show channels');">
+                    <br>
+                    <input class="btn" type="button" value="Queues" onclick="sendAction('QueueSummary');">
+                    <input class="btn" type="button" value="Sip Peers" onclick="sendAction('SipPeers');">
+                    <br>
+                    <input class="btn" type="button" value="ParkedCalls" onclick="sendAction('ParkedCalls');">
+                    <input class="btn" type="button" value="Ping" onclick="sendAction('Ping');">
+                    <br>
+                    <input class="btn" type="button" value="Status" onclick="sendAction('CoreStatus');">
+                    <input class="btn" type="button" value="Settings" onclick="sendAction('CoreSettings');">
+                    <br>
+                    <input class="btn" type="button" value="List Cmd" onclick="sendAction('ListCommands');">
+                    <input class="btn" type="button" value="Reload" onclick="sendAction('Reload');">
                     
                     <hr>
                     Text filter: <br>
@@ -47,6 +51,21 @@
                     <hr>
 
                     <a href="index.jsp">Use other server</a>
+
+                    <hr>
+                    <input class="btn" type="button" value="Originate" onclick="toCmd('Originate^Application: Wait^Data: 500^Async: 1');">
+                    <input class="btn" type="button" value="Bridge" onclick="toCmd('Bridge^Channel1: ...^Channel2: ...');">
+                    <br>
+                    <input class="btn" type="button" value="Asterisk" onclick="toCmd('Command^Command: core show channels');">                   
+                    <!--input class="btn" type="button" value="Shell" onclick="toCmd('Command^Command: core show channels');" -->                   
+                    <input class="btn" type="button" value="GetVar" onclick="toCmd('GetVar^Variable: ....');">
+                    <br>
+                    <input class="btn" type="button" value="Help app" onclick="toCmd('Command^Command: core show application ...');">
+                    <input class="btn" type="button" value="Help cmd" onclick="toCmd('Command^Command: manager show command ...');">
+                    <br>
+                    <input class="btn" type="button" value="Park" onclick="toCmd('Park^Timeout: 180000');">
+                    <input class="btn" type="button" value="Hangup" onclick="toCmd('Hangup');">
+
 
                     <hr>
                     
@@ -64,7 +83,13 @@
                     <textarea name="cmd" id="cmd" class="cmd"></textarea>
                 </td>
                 <td valign="top" align="center">
-                    <input type="button" value="Send Command" onclick="sendCmdArea();">
+                    <input type="button" value="Send Command" onclick="sendCmdArea();"> <br>
+                    <small>
+                    Last post to server: <br>
+                    <div id="postresults">---</div>
+                    </small>
+                    
+
 
                     <p>
                         <a href="https://github.com/l3nz" target="new"><img border="0" src="img/fatcat.png"></a>

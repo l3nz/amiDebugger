@@ -55,14 +55,20 @@ function sendCommand( cmd ) {
 
 function sendCmdArea() {
     var text = $("#cmd").val();
-    sendCommand( text );
+    sendCommand( multiline(text) );
 }
 
 function sendAction( cmd ) {
-    sendCommand( "Action: " + cmd );
+    sendCommand( "Action: " + multiline(cmd) );
 }
 
+function toCmd( s ) {
+    $("#cmd").val( "Action: " + multiline(s) );
+}
 
+function multiline( s ) {
+    return s.replace( /\^/g, "\n" );
+}
 
 
 
